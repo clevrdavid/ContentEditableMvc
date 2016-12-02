@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ContentEditableMvcReloaded</id>
+    <version>1.0.9</version>
+    <title>ContentEditableMvcReloaded</title>
+    <authors>TheBigBang, Dave Kerr</authors>
+    <owners>TheBigBang, Dave Kerr</owners>
+    <projectUrl>https://github.com/thebigbang/ContentEditableMvc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ContentEditableMvc lets you use the power of the HTML5 contenteditable attribute and Ajax to make content changes client side. Contains ContentEdit, MultilineContentEdit and DropDownContentEdit.</description>
+    <summary>ContentEditableMvc lets you use the power of the HTML5 contenteditable attribute and Ajax to make content changes client side.</summary>
+    <tags>ContentEditable Mvc Asp Razor Ajax</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.Mvc" version="4.0.20710.0" />
+    </dependencies>
+  </metadata>
+</package>
