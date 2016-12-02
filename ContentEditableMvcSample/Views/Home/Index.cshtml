@@ -1,4 +1,5 @@
 ﻿@using ContentEditableMvc
+@using ContentEditableMvcSample.Models
 @model ContentEditableMvcSample.Models.ExampleModel
 @{
     ViewBag.Title = "ContentEditableMvc Sample";
@@ -13,6 +14,10 @@
 <p>Below are some example elements built with ContentEditableMvc</p>
 <hr />
 <h2>@Html.ContentEditableFor("EditContent", m => m.Title, new { id = Model.Id})</h2>
+
+
+<h2>@Html.DropDownContentEditableFor("EditContent", m => m.Title, new { id = Model.Id },SelectionList.Titles())</h2>
+
 <h3>@Html.ContentEditableFor("EditContent", m => m.Subtitle, new { id = Model.Id})</h3>
 <p>@Html.MultilineContentEditableFor("EditContent", m => m.ParagraphText, new { id = Model.Id})</p>
 <h3>@Html.ContentEditableFor("EditContent", m => m.Counter, new { id = Model.Id})</h3>

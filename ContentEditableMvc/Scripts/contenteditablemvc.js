@@ -30,9 +30,10 @@
     $('.cem-content').keypress(function (event) {
         if (event.keyCode == 10 || event.keyCode == 13) {
             var allowMultiline = $(this).attr('data-multiline');
+            var isDropDown = $(this).attr('data-dropdown');
 
-            //  If we're not allowing multiline, save changes instead.
-            if (allowMultiline != "true") {
+            //  If we're not allowing multiline or dropdown mode, save changes instead.
+            if (allowMultiline != "true"&&isDropDown!="true") {
                 event.preventDefault();
                 saveChanges($(this));
                 $(this).blur();
@@ -41,7 +42,11 @@
         }
         return true;
     });
-
+    $('.cem-dropdownbox').onchange(function(event) {
+        //find closest, change text value.
+        alert("blou");
+        $(this).closest('.cem-wrapper').find('.cem-content').html($(this).val());
+    });
     function saveChanges(cemWrapper) {
 
         //  Clear the original value, so we don't reset it.

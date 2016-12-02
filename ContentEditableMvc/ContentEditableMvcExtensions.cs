@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
@@ -32,7 +33,7 @@ namespace ContentEditableMvc
         public static IHtmlString ContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName, string controllerName,
                                                         Expression<Func<TModel, TProperty>>  expression, object modelData, bool enableEditing)
         {
-            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, enableEditing, false);
+            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, enableEditing, false,false,null);
         }
 
         /// <summary>
@@ -51,7 +52,7 @@ namespace ContentEditableMvc
                                                         Expression<Func<TModel, TProperty>> expression, object modelData)
         {
             //  Call the main function.
-            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, true, false);
+            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, true, false,false,null);
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace ContentEditableMvc
                                                         Expression<Func<TModel, TProperty>> expression, object modelData, bool enableEditing)
         {
             //  Call the main function.
-            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, enableEditing, false);
+            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, enableEditing, false,false,null);
         }
 
         /// <summary>
@@ -89,7 +90,7 @@ namespace ContentEditableMvc
                                                         Expression<Func<TModel, TProperty>> expression, object modelData)
         {
             //  Call the main function.
-            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, true, false);
+            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, true, false,false,null);
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace ContentEditableMvc
         public static IHtmlString MultilineContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName, string controllerName,
                                                         Expression<Func<TModel, TProperty>> expression, object modelData, bool enableEditing)
         {
-            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, enableEditing, true);
+            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, enableEditing, true,false,null);
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace ContentEditableMvc
                                                         Expression<Func<TModel, TProperty>> expression, object modelData)
         {
             //  Call the main function.
-            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, true, true);
+            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, true, true,false,null);
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace ContentEditableMvc
                                                         Expression<Func<TModel, TProperty>> expression, object modelData, bool enableEditing)
         {
             //  Call the main function.
-            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, enableEditing, true);
+            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, enableEditing, true,false,null);
         }
 
         /// <summary>
@@ -166,8 +167,92 @@ namespace ContentEditableMvc
                                                         Expression<Func<TModel, TProperty>> expression, object modelData)
         {
             //  Call the main function.
-            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, true, true);
+            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, true, true,false,null);
         }
+
+        /// <summary>
+        /// Creates a Content Editable element, that allows the user to edit content thanks to a dropdown menu.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="htmlHelper">The HTML helper.</param>
+        /// <param name="actionName">Name of the action to call to save changes.</param>
+        /// <param name="controllerName">Name of the controller to use to save changes.</param>
+        /// <param name="expression">The expression that selects the model property that will be editable.</param>
+        /// <param name="modelData">The model data, which is passed to the action. This would typically be soemthing that
+        /// identifies the model, such as new { id = Model.Id }.</param>
+        /// <param name="enableEditing">if set to <c>true</c> enable editing, otherwise, display the content
+        /// as standard read-only text.</param>
+        /// <param name="selectList">the select list items for the dropdown menu</param>
+        /// <returns>
+        /// The Html for the content, which can be edited.
+        /// </returns>
+        public static IHtmlString DropDownContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName, string controllerName,
+                                                        Expression<Func<TModel, TProperty>> expression, object modelData, bool enableEditing,IEnumerable<SelectListItem> selectList)
+        {
+            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, enableEditing, false,true, selectList);
+        }
+
+        /// <summary>
+        /// Creates a Content Editable element, that allows the user to edit content thanks to a dropdown menu.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="htmlHelper">The HTML helper.</param>
+        /// <param name="actionName">Name of the action to call to save changes.</param>
+        /// <param name="controllerName">Name of the controller to use to save changes.</param>
+        /// <param name="expression">The expression that selects the model property that will be editable.</param>
+        /// <param name="modelData">The model data, which is passed to the action. This would typically be soemthing that 
+        /// identifies the model, such as new { id = Model.Id }.</param>
+        /// <param name="selectList">the select list items for the dropdown menu</param>
+        /// <returns>The Html for the content, which can be edited.</returns>
+        public static IHtmlString DropDownContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName, string controllerName,
+                                                        Expression<Func<TModel, TProperty>> expression, object modelData,IEnumerable<SelectListItem> selectList)
+        {
+            //  Call the main function.
+            return InternalContentEditableFor(htmlHelper, actionName, controllerName, expression, modelData, true, false,true, selectList);
+        }
+
+        /// <summary>
+        /// Creates a Content Editable element, that allows the user to edit content thanks to a dropdown menu.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="htmlHelper">The HTML helper.</param>
+        /// <param name="actionName">Name of the action to call to save changes.</param>
+        /// <param name="expression">The expression that selects the model property that will be editable.</param>
+        /// <param name="modelData">The model data, which is passed to the action. This would typically be soemthing that 
+        /// identifies the model, such as new { id = Model.Id }.</param>
+        /// <param name="enableEditing">if set to <c>true</c> enable editing, otherwise, display the content
+        /// as standard read-only text.</param>
+        /// <param name="selectList">the select list items for the dropdown menu</param>
+        /// <returns>The Html for the content, which can be edited.</returns>
+        public static IHtmlString DropDownContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName,
+                                                        Expression<Func<TModel, TProperty>> expression, object modelData, bool enableEditing,IEnumerable<SelectListItem> selectList)
+        {
+            //  Call the main function.
+            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, enableEditing, false,true, selectList);
+        }
+
+        /// <summary>
+        /// Creates a Content Editable element, that allows the user to edit content thanks to a dropdown menu.
+        /// </summary>
+        /// <typeparam name="TModel">The type of the model.</typeparam>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="htmlHelper">The HTML helper.</param>
+        /// <param name="actionName">Name of the action to call to save changes.</param>
+        /// <param name="expression">The expression that selects the model property that will be editable.</param>
+        /// <param name="modelData">The model data, which is passed to the action. This would typically be soemthing that 
+        /// identifies the model, such as new { id = Model.Id }.</param>
+        /// <param name="selectList">the select list items for the dropdown menu</param>
+        /// <returns>The Html for the content, which can be edited.</returns>
+        public static IHtmlString DropDownContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName,
+                                                        Expression<Func<TModel, TProperty>> expression, object modelData,IEnumerable<SelectListItem> selectList)
+        {
+            //  Call the main function.
+            return InternalContentEditableFor(htmlHelper, actionName, null, expression, modelData, true, false,true, selectList);
+        }
+
 
         /// <summary>
         /// Creates a Content Editable element, that allows the user to edit content inline.
@@ -183,6 +268,8 @@ namespace ContentEditableMvc
         /// <param name="enableEditing">if set to <c>true</c> enable editing, otherwise, display the content
         /// as standard read-only text.</param>
         /// <param name="allowMultiline">if set to <c>true</c> allow multiline.</param>
+        /// <param name="isDropDown">if set to <c>true</c> allow dropdown menu.</param>
+        /// <param name="selectList">Selection list in order to populate the object in case of dropdown choice.</param>
         /// <returns>
         /// The Html for the content, which can be edited.
         /// </returns>
@@ -193,7 +280,7 @@ namespace ContentEditableMvc
         /// </exception>
         private static IHtmlString InternalContentEditableFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, string actionName, string controllerName,
                                                                  Expression<Func<TModel, TProperty>> expression, object modelData, bool enableEditing,
-                                                                 bool allowMultiline)
+                                                                 bool allowMultiline,bool isDropDown,IEnumerable<SelectListItem> selectList)
         {
             //  First, we'll create the URL to the action.
             if (string.IsNullOrEmpty(actionName))
@@ -221,7 +308,7 @@ namespace ContentEditableMvc
                 modelDataJson = (new JavaScriptSerializer()).Serialize(modelData);
 
             //  Return the Content Editable element.
-            return CreateContentEditableHtml(actionUrl, editableContentPropertyName, editableContent, modelDataJson, allowMultiline);
+            return CreateContentEditableHtml(actionUrl, editableContentPropertyName, editableContent, modelDataJson, allowMultiline,isDropDown,selectList);
         }
 
         /// <summary>
@@ -232,8 +319,10 @@ namespace ContentEditableMvc
         /// <param name="content">The content.</param>
         /// <param name="modelDataJson">The model data json.</param>
         /// <param name="allowMultiline">if set to <c>true</c> allow multiline.</param>
+        /// <param name="isDropDown">if set to <c>true</c> allow dropdown menu.</param>
+        /// <param name="selectList">select list item for the dropdown (can be null)</param>
         /// <returns>Html for the content editable element.</returns>
-        private static IHtmlString CreateContentEditableHtml(string actionUrl, string propertyName, string content, string modelDataJson, bool allowMultiline)
+        private static IHtmlString CreateContentEditableHtml(string actionUrl, string propertyName, string content, string modelDataJson, bool allowMultiline,bool isDropDown, IEnumerable<SelectListItem> selectList)
         {
             var savechanges = new TagBuilder("a");
             savechanges.AddCssClass("cem-savechanges");
@@ -248,6 +337,21 @@ namespace ContentEditableMvc
             toolbar.InnerHtml = discardchanges.ToString();
             toolbar.InnerHtml += savechanges.ToString();
 
+            if (isDropDown)
+            {
+                TagBuilder dropDownSelection = new TagBuilder("select");
+                dropDownSelection.AddCssClass("cem-dropdownbox");
+                foreach(SelectListItem el in selectList)
+                {
+                    TagBuilder option=new TagBuilder("option");
+                    option.InnerHtml += "value=\"" + el.Value+"\"";
+                    option.SetInnerText(el.Text);
+                    dropDownSelection.InnerHtml += option;
+                }
+                toolbar.InnerHtml += dropDownSelection.ToString();
+            }
+
+
             var contenteditable = new TagBuilder("div");
             contenteditable.Attributes["contenteditable"] = "true";
             contenteditable.AddCssClass("cem-content");
@@ -255,6 +359,7 @@ namespace ContentEditableMvc
             contenteditable.Attributes["data-edit-url"] = actionUrl;
             contenteditable.Attributes["data-model-data"] = modelDataJson;
             contenteditable.Attributes["data-multiline"] = allowMultiline ? "true" : "false";
+            contenteditable.Attributes["data-dropdown"] = isDropDown ? "true" : "false";
             contenteditable.InnerHtml = content;
 
             var wrapper = new TagBuilder("div");
