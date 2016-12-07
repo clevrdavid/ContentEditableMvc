@@ -1,23 +1,24 @@
 ﻿$(function () {
 
     var currentEditingWrapper;
-
+    var dropdownFocussed;
+    var timeout;
     $('.cem-content').focus(function () {
         var cemWrapper = $(this).parent();
         if (currentEditingWrapper != cemWrapper)
             startEditing(cemWrapper);
     });
-
     function blurTimeout(cemContent) {
         var cemWrapper = cemContent.parent();
         stopEditing(cemWrapper);
     }
-
     $('.cem-content').blur(function () {
+        var isDropDown = $(this).attr('data-dropdown');
+        if (isDropDown == "true") return;
         var cemContent = $(this);
         window.setTimeout(function () {
             blurTimeout(cemContent);
-        }, 100);
+        }, timeout);
     });
 
     $('.cem-savechanges').click(function () {
@@ -26,14 +27,17 @@
     });
 
     //  No need for .cem-discardchanges - clicking it blurs the input, so it discards the changes anyway.
-
+    $('.cem-discardchanges').click(function () {
+        var cemWrapper = $(this).closest('.cem-wrapper');
+        stopEditing(cemWrapper);
+    });
     $('.cem-content').keypress(function (event) {
         if (event.keyCode == 10 || event.keyCode == 13) {
             var allowMultiline = $(this).attr('data-multiline');
             var isDropDown = $(this).attr('data-dropdown');
 
             //  If we're not allowing multiline or dropdown mode, save changes instead.
-            if (allowMultiline != "true"&&isDropDown!="true") {
+            if (allowMultiline != "true" && isDropDown != "true") {
                 event.preventDefault();
                 saveChanges($(this));
                 $(this).blur();
@@ -42,9 +46,8 @@
         }
         return true;
     });
-    $('.cem-dropdownbox').onchange(function(event) {
+    $('.cem-dropdownbox').on("change", function (event) {
         //find closest, change text value.
-        alert("blou");
         $(this).closest('.cem-wrapper').find('.cem-content').html($(this).val());
     });
     function saveChanges(cemWrapper) {
