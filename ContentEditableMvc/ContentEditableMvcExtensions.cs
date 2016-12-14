@@ -341,10 +341,10 @@ namespace ContentEditableMvc
             {
                 TagBuilder dropDownSelection = new TagBuilder("select");
                 dropDownSelection.AddCssClass("cem-dropdownbox");
-                foreach(SelectListItem el in selectList)
+                foreach (SelectListItem el in selectList)
                 {
-                    TagBuilder option=new TagBuilder("option");
-                    option.InnerHtml += "value=\"" + el.Value+"\"";
+                    TagBuilder option = new TagBuilder("option");
+                    option.Attributes["value"]=el.Value;
                     option.SetInnerText(el.Text);
                     dropDownSelection.InnerHtml += option;
                 }
